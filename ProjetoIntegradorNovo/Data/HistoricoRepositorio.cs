@@ -137,6 +137,47 @@ namespace ProjetoIntegradorNovo.Data
                 throw new Exception("Erro ao listar histórico: " + ex.Message, ex);
             }
         }
+        public List<Historico> ListarTodosAlunos()
+        {
+            try
+            {
+                string sql =
+                    @"SELECT 
+                        a.Codigo,
+                    COALESCE(a.Nome, 'Sem Nome') AS Nome,
+                    COALESCE(a.Cpf, '00000000000') AS Cpf,
+                    COALESCE(h.SaldoAtual, 0) AS SaldoAtual
+                    FROM Aluno a
+                    OUTER APPLY (
+                    SELECT TOP 1 h.SaldoAtual
+                    FROM Historico h
+                    WHERE h.Cpf = a.Cpf
+                    ORDER BY h.Transacao DESC, h.Codigo DESC
+                    ) h;";
+
+                SqlCommand comando = new SqlCommand(sql, _conn);
+                var lista = new List<Historico>();
+                using (var reader = comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var historico = new Historico
+                        {
+                            SaldoAtual = Convert.ToInt32(reader.GetDecimal(reader.GetOrdinal("saldoAtual"))),
+                            cpfAluno = reader.GetString(reader.GetOrdinal("Cpf")),
+                            nomeAluno = reader.GetString(reader.GetOrdinal("Nome"))
+                        };
+
+                        lista.Add(historico);
+                    }
+                }
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao listar histórico: " + ex.Message, ex);
+            }
+        }
     }
 }
     

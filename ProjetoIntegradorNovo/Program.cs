@@ -17,6 +17,7 @@ Conexao db = new Conexao();
         Console.WriteLine("3 - Realizar impressão");
         Console.WriteLine("4 - Consultar saldo");
         Console.WriteLine("5 - Consultar histórico");
+        Console.WriteLine("6 - Consultar saldo de todos alunos");
         Console.WriteLine("0 - Sair");
 
         Console.Write("\nEscolha: ");
@@ -119,7 +120,15 @@ Conexao db = new Conexao();
                     foreach (var h in lista)
                         Console.WriteLine($"[{h.Transacao}] {h.TipoMovimentacao} {h.QuantidadeMovimentacao} | Saldo: {h.SaldoAtual}");
                     break;
-            }
+                case 6:
+                    var listaAlunos = historicoRepositorio.ListarTodosAlunos();
+                if (listaAlunos.Count == 0) { Console.WriteLine("Nenhum aluno encontrado."); break; }
+                if (listaAlunos[0].SaldoAtual == 0 && listaAlunos.TrueForAll(a => a.TipoMovimentacao != "COMPRA"))
+                { Console.WriteLine("Nenhum aluno com saldo encontrado."); break; }
+                foreach (var h in listaAlunos)
+                        Console.WriteLine($"Aluno: {h.nomeAluno} | CPF: {h.cpfAluno} | Saldo: {h.SaldoAtual}");
+                    break;
+                }
         }
         catch (Exception ex)
         {
