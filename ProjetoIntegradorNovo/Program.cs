@@ -4,10 +4,10 @@ using ProjetoIntegradorNovo.Data;
 
 Conexao db = new Conexao();
 
-    db.Conectar();
+db.Conectar();
 
-    AlunoRepositorio alunoRepositorio = new AlunoRepositorio(db.conn);
-    HistoricoRepositorio historicoRepositorio = new HistoricoRepositorio(db.conn);
+AlunoRepositorio alunoRepositorio = new AlunoRepositorio(db.conn);
+HistoricoRepositorio historicoRepositorio = new HistoricoRepositorio(db.conn);
 
 while (true)
 {
