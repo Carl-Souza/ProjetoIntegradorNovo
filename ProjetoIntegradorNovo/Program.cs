@@ -74,13 +74,15 @@ while (true)
                     {
                         Console.WriteLine("Aluno com este CPF já cadastrado.");
                     }
+                    else
+                    {
+                        alunoRepositorio.Inserir(new Aluno { Nome = nome, Cpf = cpf });
+                        Console.WriteLine("Aluno cadastrado!");
+                        break;
+                    }
+
                 } while (!cpf.All(char.IsDigit) && string.IsNullOrEmpty(cpf));
-
-
-                alunoRepositorio.Inserir(new Aluno { Nome = nome, Cpf = cpf });
-                Console.WriteLine("Aluno cadastrado!");
                 break;
-
 
             case 2:
                     Console.Write("CPF do aluno: ");
