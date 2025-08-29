@@ -8,6 +8,9 @@ db.Conectar();
 
 AlunoRepositorio alunoRepositorio = new AlunoRepositorio(db.conn);
 HistoricoRepositorio historicoRepositorio = new HistoricoRepositorio(db.conn);
+Console.WriteLine("\n--- SEJA BEM VINDO AO SISTEMA DE IMPRESSÕES CADPRESS! ---");
+Thread.Sleep(2000);
+Console.Clear();
 
 while (true)
 {
@@ -28,7 +31,7 @@ while (true)
     {
         Console.Clear();
         Console.WriteLine("Entrada inválida! Digite apenas números.");
-        continue; 
+        continue;
     }
 
     if (opcao < 0 || opcao > 6)
@@ -46,9 +49,9 @@ while (true)
     }
     Console.Clear();
     try
+    {
+        switch (opcao)
         {
-            switch (opcao)
-            {
             case 1:
                 Console.Write("Nome do aluno: ");
                 string nome = Console.ReadLine();
@@ -62,11 +65,13 @@ while (true)
                     if (!cpf.All(char.IsDigit))
                     {
                         Console.WriteLine("Digite apenas números!");
+                        break;
                     }
 
                     if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(cpf))
                     {
                         Console.WriteLine("Nome e CPF não podem ser vazios.");
+                        break;
                     }
 
                     if (cpf.Length != 11)
@@ -78,6 +83,7 @@ while (true)
                     if (alunoRepositorio.BuscarAlunos().Exists(a => a.Cpf == cpf))
                     {
                         Console.WriteLine("Aluno com este CPF já cadastrado.");
+                        break;
                     }
                     else
                     {
@@ -90,31 +96,39 @@ while (true)
                 break;
 
             case 2:
-                    Console.Write("CPF do aluno: ");
-                    string codCompra = Console.ReadLine();
-                    if (string.IsNullOrEmpty(codCompra))
-                    {
-                        Console.WriteLine("CPF do aluno não pode ser vazio.");
-                        break;
-                    }
-                    if (historicoRepositorio.ConsultarSaldo(codCompra) == null)
-                    {
-                        Console.WriteLine("Aluno não encontrado.");
-                        break;
-                    }
-                    Console.Write("Quantidade (25 ou 50): ");
-                    int qtdCompra = int.Parse(Console.ReadLine());
-                    if (qtdCompra != 25 && qtdCompra != 50)
-                    {
-                        Console.WriteLine("Pacote inválido!");
-                        break;
-                    }
-                    else
-                    {
-                        historicoRepositorio.RegistrarMovimentacao(codCompra, "COMPRA", qtdCompra);
-                        Console.WriteLine("Compra registrada!");
-                    }
+                Console.Write("CPF do aluno: ");
+                string codCompra = Console.ReadLine();
+                if (string.IsNullOrEmpty(codCompra))
+                {
+                    Console.WriteLine("CPF do aluno não pode ser vazio.");
                     break;
+                }
+                if (historicoRepositorio.ConsultarSaldo(codCompra) == null)
+                {
+                    Console.WriteLine("Aluno não encontrado.");
+                    break;
+                }
+                Console.Write("Quantidade (25 ou 50): ");
+                string qtdCompraInput = Console.ReadLine();
+                int qtdCompra;
+
+                if (!int.TryParse(qtdCompraInput, out qtdCompra))
+                {
+                    Console.Clear();
+                    Console.WriteLine("Entrada inválida! Digite apenas números.");
+                    continue;
+                }
+                if (qtdCompra != 25 && qtdCompra != 50)
+                {
+                    Console.WriteLine("Pacote inválido!");
+                    break;
+                }
+                else
+                {
+                    historicoRepositorio.RegistrarMovimentacao(codCompra, "COMPRA", qtdCompra);
+                    Console.WriteLine("Compra registrada!");
+                }
+                break;
 
             case 3:
                 Console.Write("CPF do aluno: ");
@@ -142,7 +156,7 @@ while (true)
                     if (!int.TryParse(inpt, out qtdImp))
                     {
                         Console.WriteLine("Digite apenas números!");
-                        continue; 
+                        continue;
                     }
                     historicoRepositorio.RegistrarMovimentacao(codImp, "IMPRESSAO", qtdImp);
                     var consulta = historicoRepositorio.ConsultarSaldo(codImp);
@@ -182,12 +196,12 @@ while (true)
                 if (listaAlunos[0].SaldoAtual == 0 && listaAlunos.TrueForAll(a => a.TipoMovimentacao != "COMPRA"))
                 { Console.WriteLine("Nenhum aluno com saldo encontrado."); break; }
                 foreach (var h in listaAlunos)
-                        Console.WriteLine($"Aluno: {h.nomeAluno} | CPF: {h.cpfAluno} | Saldo: {h.SaldoAtual}");
-                    break;
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine("Erro: " + ex.Message);
+                    Console.WriteLine($"Aluno: {h.nomeAluno} | CPF: {h.cpfAluno} | Saldo: {h.SaldoAtual}");
+                break;
         }
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine("Erro: " + ex.Message);
+    }
+}
