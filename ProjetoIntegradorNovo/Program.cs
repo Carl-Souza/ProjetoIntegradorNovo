@@ -38,8 +38,12 @@ while (true)
         continue;
     }
 
-    if (opcao == 0) break;
-
+    if (opcao == 0)
+    {
+        Console.WriteLine("Encerrando o programa...");
+        Thread.Sleep(1000);
+        break;
+    }
     Console.Clear();
     try
         {
