@@ -1,9 +1,9 @@
 ﻿using System.Data.SqlClient;
-namespace ProjetoIntegradorNovo
+namespace ProjetoIntegradorNovo.Data
 {
     public class Conexao
     {
-        public SqlConnection conn = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=JovemProgramador;Integrated Security=True;TrustServerCertificate=True;");
+        public SqlConnection conn = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=ProjetoIntegrador;Integrated Security=True;TrustServerCertificate=True;");
 
         public void Conectar()
         {
@@ -17,4 +17,3 @@ namespace ProjetoIntegradorNovo
     }
 }
 
-}

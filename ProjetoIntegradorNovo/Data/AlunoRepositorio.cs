@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace ProjetoIntegradorNovo
+namespace ProjetoIntegradorNovo.Data
 
 {
     public class AlunoRepositorio
@@ -20,10 +20,10 @@ namespace ProjetoIntegradorNovo
                             """
                     INSERT INTO Aluno (
                         Nome, 
-                        Cpf, 
+                        Cpf
                     ) VALUES (
                         @Nome, 
-                        @Cpf, 
+                        @Cpf
                     );
                     """;
 

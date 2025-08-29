@@ -8,6 +8,6 @@ namespace ProjetoIntegradorNovo
         public DateTime Transacao { get; set; }
         public string TipoMovimentacao { get; set; } 
         public int QuantidadeMovimentacao { get; set; }
-        public int SaldoAtual { get; set; }
+        public decimal SaldoAtual { get; set; }
     }
 }
