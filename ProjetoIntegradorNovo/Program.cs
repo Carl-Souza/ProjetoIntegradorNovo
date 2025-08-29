@@ -72,6 +72,7 @@ while (true)
                     if (cpf.Length != 11)
                     {
                         Console.WriteLine("CPF deve ter 11 dígitos.");
+                        break;
                     }
 
                     if (alunoRepositorio.BuscarAlunos().Exists(a => a.Cpf == cpf))
