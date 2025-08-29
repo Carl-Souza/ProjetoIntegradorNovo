@@ -62,17 +62,18 @@ namespace ProjetoIntegradorNovo.Data
             {
                 var historico = ConsultarSaldo(cpf);
                 decimal saldoAtual = historico != null ? historico.SaldoAtual : 0;
-
-                if (tipo == "COMPRA")
-                    saldoAtual += quantidade;
-                else if (tipo == "IMPRESSAO")
+                if (cpf != null)
                 {
-                    if (saldoAtual < quantidade)
-                        throw new Exception("Saldo insuficiente para impressão!");
-                    saldoAtual -= quantidade;
-                }
-                string sql =
-                    @"INSERT INTO 
+                    if (tipo == "COMPRA")
+                        saldoAtual += quantidade;
+                    else if (tipo == "IMPRESSAO")
+                    {
+                        if (saldoAtual < quantidade)
+                            throw new Exception("Saldo insuficiente para impressão!");
+                        saldoAtual -= quantidade;
+                    }
+                    string sql =
+                        @"INSERT INTO 
                         Historico 
                         (cpf, 
                         tipoMovimentacao, 
@@ -84,17 +85,18 @@ namespace ProjetoIntegradorNovo.Data
                         @qtd,
                         @saldo)";
 
-                SqlCommand comando = new SqlCommand(sql, _conn);
-                comando.Parameters.AddWithValue("@Cpf", cpf);
-                comando.Parameters.AddWithValue("@tipo", tipo);
-                comando.Parameters.AddWithValue("@qtd", quantidade);
-                comando.Parameters.AddWithValue("@saldo", saldoAtual);
+                    SqlCommand comando = new SqlCommand(sql, _conn);
+                    comando.Parameters.AddWithValue("@Cpf", cpf);
+                    comando.Parameters.AddWithValue("@tipo", tipo);
+                    comando.Parameters.AddWithValue("@qtd", quantidade);
+                    comando.Parameters.AddWithValue("@saldo", saldoAtual);
 
-                comando.ExecuteNonQuery();
+                    comando.ExecuteNonQuery();
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao inserir Aluno: " + ex.Message, ex);
+                throw new Exception(ex.Message, ex);
             }
         }
         public List<Historico> ListarPorAluno(string cpf)
