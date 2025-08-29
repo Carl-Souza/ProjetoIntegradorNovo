@@ -144,7 +144,9 @@ while (true)
                         continue; 
                     }
                     historicoRepositorio.RegistrarMovimentacao(codImp, "IMPRESSAO", qtdImp);
-                    Console.WriteLine("Impressão registrada!");
+                    var consulta = historicoRepositorio.ConsultarSaldo(codImp);
+                    decimal novoSaldo = consulta != null ? consulta.SaldoAtual : 0;
+                    Console.WriteLine($"Impressão registrada! Novo saldo: {novoSaldo}");
                     break;
                 }
 
